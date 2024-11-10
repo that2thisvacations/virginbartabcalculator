@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virgin Voyages Bar Tab Calculator</title>
+    <style>
+        /* Container for calculator with specified dimensions */
+        .calculator-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .container {
+            width: 100%;
+            height: 480px;
+            border: 5px solid black;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .container h2 {
+            font-weight: bold;
+            color: red;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+            font-size: 14px;
+            text-align: center;
+        }
+        input[type="number"] {
+            width: 90%;
+            padding: 5px;
+            text-align: center;
+        }
+        .drink-checkbox {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 0 10px;
+        }
+        .result {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .calculate-btn {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+        }
+        .book-btn {
+            width: 90%;
+            padding: 10px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin: 15px auto 0;
+            display: none; /* Hidden by default, shown after calculation */
+            animation: pulse 1.5s infinite;
+        }
+        /* Pulse animation for BOOK NOW button */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .footer {
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Calculator Wrapper to isolate the component -->
+<div class="calculator-wrapper">
+    <div class="container">
+        <h2>Virgin Voyages Bar Tab Calculator</h2>
+
+        <form id="barTabForm">
+            <label for="nights">Number of Nights</label>
+            <input type="number" id="nights" name="nights" min="1" max="30" required>
+
+            <label>Number of Drinks Per Day</label>
+            <div class="drink-checkbox">
+                <label for="beerCount">Beers ($8 each)</label>
+                <input type="number" id="beerCount" name="beerCount" min="0" value="0">
+            </div>
+            <div class="drink-checkbox">
+                <label for="wineCount">Wines ($9 each)</label>
+                <input type="number" id="wineCount" name="wineCount" min="0" value="0">
+            </div>
+            <div class="drink-checkbox">
+                <label for="cocktailCount">Cocktails ($14 each)</label>
+                <input type="number" id="cocktailCount" name="cocktailCount" min="0" value="0">
+            </div>
+            <div class="drink-checkbox">
+                <label for="coffeeCount">Coffees ($5 each)</label>
+                <input type="number" id="coffeeCount" name="coffeeCount" min="0" value="0">
+            </div>
+            <div class="drink-checkbox">
+                <label for="juiceCount">Juices ($7 each)</label>
+                <input type="number" id="juiceCount" name="juiceCount" min="0" value="0">
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateBarTab()">Calculate Bar Tab</button>
+        </form>
+
+        <div id="result" class="result"></div>
+       
+        <!-- "BOOK NOW" button that appears after calculation -->
+        <a href="https://bit.ly/VVBookIt" target="_blank">
+            <button id="bookNowBtn" class="book-btn">Book Now</button>
+        </a>
+
+        <div class="footer">
+            Courtesy of Duane "TravelBuddy" Maclin
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateBarTab() {
+        const nights = document.getElementById('nights').value;
+        const beerCount = document.getElementById('beerCount').value;
+        const wineCount = document.getElementById('wineCount').value;
+        const cocktailCount = document.getElementById('cocktailCount').value;
+        const coffeeCount = document.getElementById('coffeeCount').value;
+        const juiceCount = document.getElementById('juiceCount').value;
+
+        const beerCost = 8 * beerCount * nights;
+        const wineCost = 9 * wineCount * nights;
+        const cocktailCost = 14 * cocktailCount * nights;
+        const coffeeCost = 5 * coffeeCount * nights;
+        const juiceCost = 7 * juiceCount * nights;
+
+        const totalCost = beerCost + wineCost + cocktailCost + coffeeCost + juiceCost;
+
+        let recommendedBarTab = 0;
+        let bonus = 0;
+
+        if (totalCost <= 200) {
+            recommendedBarTab = 200;
+            bonus = 25;
+        } else if (totalCost <= 300) {
+            recommendedBarTab = 300;
+            bonus = 50;
+        } else if (totalCost <= 500) {
+            recommendedBarTab = 500;
+            bonus = 100;
+        } else if (totalCost <= 750) {
+            recommendedBarTab = 750;
+            bonus = 175;
+        } else {
+            recommendedBarTab = 1000;
+            bonus = 250;
+        }
+
+        document.getElementById('result').textContent =
+            `Recommended Bar Tab: $${recommendedBarTab} (+$${bonus} Bonus), Total Cost: $${totalCost}`;
+
+        // Show the "BOOK NOW" button after calculation
+        document.getElementById('bookNowBtn').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
+
